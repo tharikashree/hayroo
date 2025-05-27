@@ -38,10 +38,10 @@ pipeline {
     stage('Deploy to Kubernetes') {
       steps {
         script {
-          bat 'kubectl apply -f k8s/client-deployment.yaml'
-          bat 'kubectl apply -f k8s/client-service.yaml'
-          bat 'kubectl apply -f k8s/server-deployment.yaml'
-          bat 'kubectl apply -f k8s/server-service.yaml'
+          powershell 'kubectl apply -f k8s/client-deployment.yaml'
+          powershell 'kubectl apply -f k8s/client-service.yaml'
+          powershell 'kubectl apply -f k8s/server-deployment.yaml'
+          powershell 'kubectl apply -f k8s/server-service.yaml'
         }
       }
     }
