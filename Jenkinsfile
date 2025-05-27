@@ -6,7 +6,7 @@ pipeline {
     DOCKERHUB_USERNAME = 'tharikashree'
     IMAGE_CLIENT = "${DOCKERHUB_USERNAME}/client"
     IMAGE_SERVER = "${DOCKERHUB_USERNAME}/server"
-    KUBECONFIG = "${WORKSPACE}\\.kube\\config"
+     KUBECONFIG = "${WORKSPACE}\\.kube\\config"
   }
 
   stages {
@@ -35,17 +35,7 @@ pipeline {
         }
       }
     }
-        stage('Inject kubeconfig securely') {
-            steps {
-                withCredentials([file(credentialsId: 'kubeconfig-secret', variable: 'KUBECONFIG_FILE')]) {
-                    powershell '''
-                        New-Item -ItemType Directory -Force -Path ".kube"
-                        Copy-Item $env:KUBECONFIG_FILE ".kube\\config" -Force
-                    '''
-                }
-            }
-        }
-    
+
     stage('Deploy to Kubernetes') {
       steps {
         script {
