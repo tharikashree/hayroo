@@ -25,9 +25,16 @@ pipeline {
     }
 
     stage('Check Docker Hub Reachability') {
-      steps {
-        sh 'curl -v https://registry-1.docker.io/v2/'
-      }
+        steps {
+            script {
+                def result = sh(script: 'curl -s --head https://index.docker.io/v1/ | head -n 1', returnStatus: true)
+                if (result != 0) {
+                    error("❌ Docker Hub is not reachable")
+                } else {
+                    echo "✅ Docker Hub is reachable"
+                }
+            }
+        }
     }
     stage('Push to Docker Hub') {
       steps {
