@@ -35,8 +35,6 @@ pipeline {
         }
       }
     }
-
-    stages {
         stage('Inject kubeconfig securely') {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig-secret', variable: 'KUBECONFIG_FILE')]) {
@@ -47,8 +45,7 @@ pipeline {
                 }
             }
         }
-    }
-
+    
     stage('Deploy to Kubernetes') {
       steps {
         script {
