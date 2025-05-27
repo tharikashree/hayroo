@@ -24,13 +24,19 @@ pipeline {
       }
     }
 
+    stage('Check Docker Hub Reachability') {
+      steps {
+        sh 'curl -v https://registry-1.docker.io/v2/'
+      }
+    }
     stage('Push to Docker Hub') {
       steps {
-        script {
-          docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-creds-id') {
-            docker.image("${IMAGE_CLIENT}").push('latest')
-            docker.image("${IMAGE_SERVER}").push('latest')
-          }
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds-id', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+          sh '''
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push ${DOCKER_USER}/client:latest
+            docker push ${DOCKER_USER}/server:latest
+          '''
         }
       }
     }
