@@ -11,7 +11,7 @@ pipeline {
   stages {
     stage('Clone Repo') {
       steps {
-        git url: 'https://github.com/tharikashree/hayroo.git',branch: 'main'
+        git url: 'https://github.com/tharikashree/hayroo.git', branch: 'main'
       }
     }
 
@@ -38,10 +38,10 @@ pipeline {
     stage('Deploy to Kubernetes') {
       steps {
         script {
-          sh 'kubectl apply -f k8s/client-deployment.yaml'
-          sh 'kubectl apply -f k8s/client-service.yaml'
-          sh 'kubectl apply -f k8s/server-deployment.yaml'
-          sh 'kubectl apply -f k8s/server-service.yaml'
+          bat 'kubectl apply -f k8s/client-deployment.yaml'
+          bat 'kubectl apply -f k8s/client-service.yaml'
+          bat 'kubectl apply -f k8s/server-deployment.yaml'
+          bat 'kubectl apply -f k8s/server-service.yaml'
         }
       }
     }
