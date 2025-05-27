@@ -27,7 +27,7 @@ pipeline {
     stage('Check Docker Hub Reachability') {
         steps {
             script {
-                def result = sh(script: 'curl -s --head https://index.docker.io/v1/ | head -n 1', returnStatus: true)
+                def result = bat(script: 'curl -s --head https://index.docker.io/v1/ | head -n 1', returnStatus: true)
                 if (result != 0) {
                     error("❌ Docker Hub is not reachable")
                 } else {
@@ -38,11 +38,11 @@ pipeline {
     }
     stage('Push to Docker Hub') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds-id', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-          sh '''
-            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-            docker push ${DOCKER_USER}/client:latest
-            docker push ${DOCKER_USER}/server:latest
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds-id', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+          bat '''
+            echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+            docker push ${DOCKERHUB_USERNAME}/client:latest
+            docker push ${DOCKERHUB_USERNAME}/server:latest
           '''
         }
       }
@@ -51,10 +51,10 @@ pipeline {
     stage('Deploy to Kubernetes') {
       steps {
         script {
-          sh 'kubectl apply -f k8s/client-deployment.yaml'
-          sh 'kubectl apply -f k8s/client-service.yaml'
-          sh 'kubectl apply -f k8s/server-deployment.yaml'
-          sh 'kubectl apply -f k8s/server-service.yaml'
+          bat 'kubectl apply -f k8s/client-deployment.yaml'
+          bat 'kubectl apply -f k8s/client-service.yaml'
+          bat 'kubectl apply -f k8s/server-deployment.yaml'
+          bat 'kubectl apply -f k8s/server-service.yaml'
         }
       }
     }
