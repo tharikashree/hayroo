@@ -11,7 +11,7 @@ pipeline {
   stages {
     stage('Clone Repo') {
       steps {
-        git 'https://github.com/tharikashree/hayroo.git'
+        git 'https://github.com/tharikashree/hayroo.git',branch: 'main'
       }
     }
 
