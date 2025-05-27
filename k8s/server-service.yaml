@@ -7,6 +7,6 @@ spec:
   selector:
     app: server
   ports:
-    - port: 5000
+    - port: 8000
       targetPort: 5000
       nodePort: 30002

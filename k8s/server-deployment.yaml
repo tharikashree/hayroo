@@ -14,6 +14,17 @@ spec:
     spec:
       containers:
         - name: server
-          image: tharikashree/server:latest
+          image: tharikashree/imageserver
           ports:
-            - containerPort: 5000
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "mongodb://localhost:27017/mydb?authSource=admin"
+            - name: PORT
+              value: "8000"
+            - name: BRAINTREE_MERCHANT_ID
+              value: "n74dc2kw9g3ws389"
+            - name: BRAINTREE_PUBLIC_KEY
+              value: "bgytmgzhz5f6t2tg"
+            - name: BRAINTREE_PRIVATE_KEY
+              value: "e6f226166da99d874f00008f0bba14fe"

@@ -62,10 +62,11 @@ const SingleProduct = (props) => {
         products.map((item, index) => {
           return (
             <Fragment key={index}>
-              <div className="relative col-span-1 m-2">
+              
+              <div className="col-span-1 m-2 border rounded-xl p-2 shadow-md flex flex-col h-[370px] relative">
                 <img
                   onClick={(e) => history.push(`/products/${item._id}`)}
-                  className="w-full object-cover object-center cursor-pointer"
+                  className="w-full h-64 object-center cursor-pointer"
                   src={`${apiURL}/uploads/products/${item.pImages[0]}`}
                   alt=""
                 />
