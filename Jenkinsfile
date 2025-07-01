@@ -16,12 +16,18 @@ pipeline {
       }
     }
 
-    stage('Build Docker Images') {
+    stage('Login to Docker Hub') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-creds-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-      powershell '''
-        echo $env:DOCKER_PASSWORD | docker login -u $env:DOCKER_USERNAME --password-stdin
-      '''
+          powershell '''
+            echo $env:DOCKER_PASSWORD | docker login -u $env:DOCKER_USERNAME --password-stdin
+          '''
+        }
+      }
+    }
+
+    stage('Build Docker Images') {
+      steps {
         script {
           docker.build("${IMAGE_CLIENT}", './client')
           docker.build("${IMAGE_SERVER}", './server')
