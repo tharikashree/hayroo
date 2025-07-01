@@ -61,15 +61,3 @@ hayroo/
 ## 🧪 Local Development
 
 ### 1. Clone the Repository
-
-```bash
-        git clone https://github.com/tharikashree/hayroo.git
-        cd hayroo
-
-# Build images
-docker build -t tharikashree/client ./client
-docker build -t tharikashree/server ./server
-
-# Run containers (example)
-docker run -p 3000:3000 tharikashree/client
-docker run -p 5000:5000 tharikashree/server
