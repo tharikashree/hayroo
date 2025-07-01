@@ -15,9 +15,20 @@ pipeline {
         git url: 'https://github.com/tharikashree/hayroo.git',branch: 'main'
       }
     }
+    stage('Login to Docker Hub and Build Images') {
+  steps {
+    withCredentials([usernamePassword(credentialsId: 'dockerhub-creds-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+      powershell '''
+        Write-Host "Logging into Docker Hub..."
+        echo $env:DOCKER_PASSWORD | docker login -u $env:DOCKER_USERNAME --password-stdin
+      '''
+    }
+  }
+}
 
     stage('Build Docker Images') {
       steps {
+        
         script {
           docker.build("${IMAGE_CLIENT}", './client')
           docker.build("${IMAGE_SERVER}", './server')
