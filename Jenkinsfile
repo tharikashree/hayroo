@@ -16,29 +16,15 @@ pipeline {
       }
     }
 
-    stage('Login to Docker Hub and Build Images') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-          powershell '''
-            Write-Host "Logging into Docker Hub..."
-            $dockerUser = $env:DOCKER_USERNAME
-            $dockerPass = $env:DOCKER_PASSWORD | ConvertTo-SecureString -AsPlainText -Force
-            $creds = New-Object System.Management.Automation.PSCredential ($dockerUser, $dockerPass)
-            echo $creds.GetNetworkCredential().Password | docker login -u $dockerUser --password-stdin
-          '''
-        }
-      }
-    }
-
     stage('Build Docker Images') {
       steps {
-        
         script {
-          docker.build("${IMAGE_CLIENT}", './client')
-          docker.build("${IMAGE_SERVER}", './server')
+          docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-creds-id') {
+            docker.build("${IMAGE_CLIENT}", './client')
+            docker.build("${IMAGE_SERVER}", './server')
+          }
         }
       }
-    }
 
     stage('Push to Docker Hub') {
       steps {
