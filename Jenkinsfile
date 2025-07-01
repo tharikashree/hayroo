@@ -18,16 +18,11 @@ pipeline {
 
     stage('Build Docker Images') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-          powershell '''
-            echo $env:DOCKER_PASSWORD | docker login -u $env:DOCKER_USERNAME --password-stdin
-          '''
         script {
           docker.build("${IMAGE_CLIENT}", './client')
           docker.build("${IMAGE_SERVER}", './server')
         }
       }
-    }
     }
 
     stage('Push to Docker Hub') {
