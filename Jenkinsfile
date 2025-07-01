@@ -19,8 +19,8 @@ pipeline {
     stage('Build Docker Images') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-creds-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-      sh '''
-        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      powershell '''
+        echo $env:DOCKER_PASSWORD | docker login -u $env:DOCKER_USERNAME --password-stdin
       '''
         script {
           docker.build("${IMAGE_CLIENT}", './client')
