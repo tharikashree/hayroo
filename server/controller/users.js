@@ -55,6 +55,7 @@ class User {
           transactionId,
           address,
           phone,
+          userRole: 0,
         });
         let save = await newUser.save();
         if (save) {
